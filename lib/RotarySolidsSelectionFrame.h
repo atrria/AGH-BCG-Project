@@ -21,8 +21,8 @@ class RotarySolidsSelectionFrame : public SelectionFrame
 		void TriangleButtonOnButtonClick( wxCommandEvent& event );
 		void CircleButtonOnButtonClick( wxCommandEvent& event );
 		void PolygonButtonOnButtonClick( wxCommandEvent& event );
+		void ParabolaButtonOnButtonClick( wxCommandEvent& event );
 		void LineButtonOnButtonClick( wxCommandEvent& event );
-		void CurveButtonOnButtonClick( wxCommandEvent& event );
 		void SombreroButtonOnButtonClick( wxCommandEvent& event );
 		void GenerateShapeButtonOnButtonClick( wxCommandEvent& event );
 	public:
@@ -31,8 +31,6 @@ class RotarySolidsSelectionFrame : public SelectionFrame
 		RotarySolidsSelectionFrame(RotarySolidsMainFrame* parent);
 	private:
 		RotarySolidsMainFrame* mainFrame;
-
-
 
 };
 

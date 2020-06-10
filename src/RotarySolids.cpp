@@ -20,13 +20,13 @@ MainFrame::MainFrame( wxWindow* parent, wxWindowID id, const wxString& title, co
 	wxBoxSizer* LeftSizer;
 	LeftSizer = new wxBoxSizer( wxVERTICAL );
 
-	LeftPanel = new wxPanel( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
+	LeftPanel = new wxPanel( this, wxID_ANY, wxDefaultPosition, wxSize( 700,700 ), wxTAB_TRAVERSAL );
 	LeftPanel->SetBackgroundColour( wxSystemSettings::GetColour( wxSYS_COLOUR_SCROLLBAR ) );
 
-	LeftSizer->Add( LeftPanel, 1, wxEXPAND | wxALL, 5 );
+	LeftSizer->Add( LeftPanel, 1, wxALIGN_CENTER_HORIZONTAL|wxALL, 5 );
 
 
-	MainSizer->Add( LeftSizer, 2, wxEXPAND, 5 );
+	MainSizer->Add( LeftSizer, 3, wxEXPAND|wxSHAPED, 5 );
 
 	wxBoxSizer* RightSizer;
 	RightSizer = new wxBoxSizer( wxVERTICAL );
@@ -40,7 +40,7 @@ MainFrame::MainFrame( wxWindow* parent, wxWindowID id, const wxString& title, co
 	xLabel->SetForegroundColour( wxSystemSettings::GetColour( wxSYS_COLOUR_WINDOW ) );
 	xLabel->SetBackgroundColour( wxSystemSettings::GetColour( wxSYS_COLOUR_WINDOWFRAME ) );
 
-	SlidersSizer->Add( xLabel, 1, wxALIGN_CENTER_HORIZONTAL|wxALL, 5 );
+	SlidersSizer->Add( xLabel, 0, wxALIGN_CENTER_HORIZONTAL|wxALL, 10 );
 
 	xSlider = new wxSlider( this, wxID_ANY, 50, 0, 100, wxDefaultPosition, wxSize( -1,-1 ), wxSL_HORIZONTAL );
 	xSlider->SetMinSize( wxSize( -1,50 ) );
@@ -53,7 +53,7 @@ MainFrame::MainFrame( wxWindow* parent, wxWindowID id, const wxString& title, co
 	yLabel->SetForegroundColour( wxSystemSettings::GetColour( wxSYS_COLOUR_WINDOW ) );
 	yLabel->SetBackgroundColour( wxSystemSettings::GetColour( wxSYS_COLOUR_WINDOWFRAME ) );
 
-	SlidersSizer->Add( yLabel, 0, wxALL|wxALIGN_CENTER_HORIZONTAL, 5 );
+	SlidersSizer->Add( yLabel, 0, wxALL|wxALIGN_CENTER_HORIZONTAL, 10 );
 
 	ySlider = new wxSlider( this, wxID_ANY, 50, 0, 100, wxDefaultPosition, wxSize( -1,50 ), wxSL_HORIZONTAL );
 	SlidersSizer->Add( ySlider, 0, wxEXPAND, 5 );
@@ -64,7 +64,7 @@ MainFrame::MainFrame( wxWindow* parent, wxWindowID id, const wxString& title, co
 	zLabel->SetForegroundColour( wxSystemSettings::GetColour( wxSYS_COLOUR_WINDOW ) );
 	zLabel->SetBackgroundColour( wxSystemSettings::GetColour( wxSYS_COLOUR_WINDOWFRAME ) );
 
-	SlidersSizer->Add( zLabel, 0, wxALL|wxALIGN_CENTER_HORIZONTAL, 5 );
+	SlidersSizer->Add( zLabel, 0, wxALL|wxALIGN_CENTER_HORIZONTAL, 10 );
 
 	zSlider = new wxSlider( this, wxID_ANY, 50, 0, 100, wxDefaultPosition, wxSize( -1,50 ), wxSL_HORIZONTAL );
 	SlidersSizer->Add( zSlider, 0, wxEXPAND, 5 );
@@ -75,11 +75,15 @@ MainFrame::MainFrame( wxWindow* parent, wxWindowID id, const wxString& title, co
 	wxBoxSizer* bSizer15;
 	bSizer15 = new wxBoxSizer( wxVERTICAL );
 
-	OpenPropertiesWindowButton = new wxButton( this, wxID_ANY, wxT("Wybierz figurę"), wxDefaultPosition, wxDefaultSize, 0 );
-	bSizer15->Add( OpenPropertiesWindowButton, 0, wxALIGN_CENTER_HORIZONTAL|wxALL, 10 );
+	OpenPropertiesWindowButton = new wxButton( this, wxID_ANY, wxT("Wybierz figurę"), wxDefaultPosition, wxSize( 200,50 ), 0 );
+	OpenPropertiesWindowButton->SetBackgroundColour( wxSystemSettings::GetColour( wxSYS_COLOUR_ACTIVECAPTION ) );
 
-	SaveToFileButton = new wxButton( this, wxID_ANY, wxT("Zapisz do pliku"), wxDefaultPosition, wxDefaultSize, 0 );
-	bSizer15->Add( SaveToFileButton, 0, wxALL|wxALIGN_CENTER_HORIZONTAL, 10 );
+	bSizer15->Add( OpenPropertiesWindowButton, 0, wxALIGN_CENTER_HORIZONTAL|wxALL, 15 );
+
+	SaveToFileButton = new wxButton( this, wxID_ANY, wxT("Zapisz do pliku"), wxDefaultPosition, wxSize( 200,50 ), 0 );
+	SaveToFileButton->SetBackgroundColour( wxSystemSettings::GetColour( wxSYS_COLOUR_ACTIVECAPTION ) );
+
+	bSizer15->Add( SaveToFileButton, 0, wxALL|wxALIGN_CENTER_HORIZONTAL, 15 );
 
 
 	RightSizer->Add( bSizer15, 1, wxEXPAND, 5 );
@@ -92,16 +96,12 @@ MainFrame::MainFrame( wxWindow* parent, wxWindowID id, const wxString& title, co
 	ChooseViewText->SetFont( wxFont( 14, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false, wxEmptyString ) );
 	ChooseViewText->SetForegroundColour( wxColour( 255, 255, 255 ) );
 
-	RightViewSizer->Add( ChooseViewText, 1, wxALIGN_CENTER|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+	RightViewSizer->Add( ChooseViewText, 1, wxALL, 25 );
 
-	ParallelProjectionButton = new wxButton( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 30,30 ), wxBORDER_NONE|wxBU_NOTEXT );
+	ParallelProjectionCheckBox = new wxCheckBox( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 30,30 ), 0 );
+	ParallelProjectionCheckBox->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false, wxEmptyString ) );
 
-	ParallelProjectionButton->SetBitmap( wxArtProvider::GetBitmap( wxART_REDO, wxART_BUTTON ) );
-	ParallelProjectionButton->SetBitmapPressed( wxArtProvider::GetBitmap( wxART_UNDO, wxART_BUTTON ) );
-	ParallelProjectionButton->SetBitmapFocus( wxNullBitmap );
-	ParallelProjectionButton->SetBackgroundColour( wxSystemSettings::GetColour( wxSYS_COLOUR_WINDOW ) );
-
-	RightViewSizer->Add( ParallelProjectionButton, 0, wxALIGN_CENTER|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxALL, 5 );
+	RightViewSizer->Add( ParallelProjectionCheckBox, 0, wxALL, 25 );
 
 
 	RightSizer->Add( RightViewSizer, 2, wxALIGN_CENTER|wxALL, 5 );
@@ -150,7 +150,7 @@ MainFrame::MainFrame( wxWindow* parent, wxWindowID id, const wxString& title, co
 	zSlider->Connect( wxEVT_SCROLL_TOP, wxScrollEventHandler( MainFrame::zSliderUpdated ), NULL, this );
 	OpenPropertiesWindowButton->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainFrame::OpenPropertiesWindowButtonOnButtonClick ), NULL, this );
 	SaveToFileButton->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainFrame::SaveToFileButtonOnButtonClick ), NULL, this );
-	ParallelProjectionButton->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainFrame::ParallelProjectionButtonOnButtonClick ), NULL, this );
+	ParallelProjectionCheckBox->Connect( wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler( MainFrame::ParallelProjectionCheckBoxOnCheckBox ), NULL, this );
 }
 
 MainFrame::~MainFrame()
@@ -190,7 +190,7 @@ MainFrame::~MainFrame()
 	zSlider->Disconnect( wxEVT_SCROLL_TOP, wxScrollEventHandler( MainFrame::zSliderUpdated ), NULL, this );
 	OpenPropertiesWindowButton->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainFrame::OpenPropertiesWindowButtonOnButtonClick ), NULL, this );
 	SaveToFileButton->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainFrame::SaveToFileButtonOnButtonClick ), NULL, this );
-	ParallelProjectionButton->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainFrame::ParallelProjectionButtonOnButtonClick ), NULL, this );
+	ParallelProjectionCheckBox->Disconnect( wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler( MainFrame::ParallelProjectionCheckBoxOnCheckBox ), NULL, this );
 
 }
 
@@ -270,19 +270,19 @@ SelectionFrame::SelectionFrame( wxWindow* parent, wxWindowID id, const wxString&
 
 	ShapesSecondLineSizer->Add( PolygonSizer, 0, wxALL, 5 );
 
-	ParabolicButton = new wxButton( this, wxID_ANY, wxT("parabola"), wxDefaultPosition, wxDefaultSize, 0 );
-	ParabolicButton->SetBackgroundColour( wxSystemSettings::GetColour( wxSYS_COLOUR_ACTIVECAPTION ) );
-	ParabolicButton->SetMinSize( wxSize( 100,50 ) );
-	ParabolicButton->SetMaxSize( wxSize( 100,50 ) );
+	ParabolaButton = new wxButton( this, wxID_ANY, wxT("parabola"), wxDefaultPosition, wxDefaultSize, 0 );
+	ParabolaButton->SetBackgroundColour( wxSystemSettings::GetColour( wxSYS_COLOUR_ACTIVECAPTION ) );
+	ParabolaButton->SetMinSize( wxSize( 100,50 ) );
+	ParabolaButton->SetMaxSize( wxSize( 100,50 ) );
 
-	ShapesSecondLineSizer->Add( ParabolicButton, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
+	ShapesSecondLineSizer->Add( ParabolaButton, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 
-	CurveButton = new wxButton( this, wxID_ANY, wxT("łamana"), wxDefaultPosition, wxDefaultSize, 0 );
-	CurveButton->SetBackgroundColour( wxSystemSettings::GetColour( wxSYS_COLOUR_ACTIVECAPTION ) );
-	CurveButton->SetMinSize( wxSize( 100,50 ) );
-	CurveButton->SetMaxSize( wxSize( 100,50 ) );
+	LineButton = new wxButton( this, wxID_ANY, wxT("odcinek"), wxDefaultPosition, wxDefaultSize, 0 );
+	LineButton->SetBackgroundColour( wxSystemSettings::GetColour( wxSYS_COLOUR_ACTIVECAPTION ) );
+	LineButton->SetMinSize( wxSize( 100,50 ) );
+	LineButton->SetMaxSize( wxSize( 100,50 ) );
 
-	ShapesSecondLineSizer->Add( CurveButton, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
+	ShapesSecondLineSizer->Add( LineButton, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 
 	SombreroButton = new wxButton( this, wxID_ANY, wxT("sombrero"), wxDefaultPosition, wxDefaultSize, 0 );
 	SombreroButton->SetBackgroundColour( wxSystemSettings::GetColour( wxSYS_COLOUR_ACTIVECAPTION ) );
@@ -390,7 +390,7 @@ SelectionFrame::SelectionFrame( wxWindow* parent, wxWindowID id, const wxString&
 	wxBoxSizer* GenerateShapeSizer;
 	GenerateShapeSizer = new wxBoxSizer( wxVERTICAL );
 
-	GenerateShapeButton = new wxButton( this, wxID_ANY, wxT("Generuj\nbryłę"), wxDefaultPosition, wxDefaultSize, wxBORDER_NONE );
+	GenerateShapeButton = new wxButton( this, wxID_ANY, wxT("Generuj\nbryłę"), wxDefaultPosition, wxDefaultSize, 0 );
 	GenerateShapeButton->SetFont( wxFont( 10, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD, false, wxEmptyString ) );
 	GenerateShapeButton->SetForegroundColour( wxColour( 255, 255, 255 ) );
 	GenerateShapeButton->SetBackgroundColour( wxColour( 77, 121, 170 ) );
@@ -416,8 +416,8 @@ SelectionFrame::SelectionFrame( wxWindow* parent, wxWindowID id, const wxString&
 	TriangleButton->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( SelectionFrame::TriangleButtonOnButtonClick ), NULL, this );
 	CircleButton->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( SelectionFrame::CircleButtonOnButtonClick ), NULL, this );
 	PolygonButton->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( SelectionFrame::PolygonButtonOnButtonClick ), NULL, this );
-	ParabolicButton->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( SelectionFrame::LineButtonOnButtonClick ), NULL, this );
-	CurveButton->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( SelectionFrame::CurveButtonOnButtonClick ), NULL, this );
+	ParabolaButton->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( SelectionFrame::ParabolaButtonOnButtonClick ), NULL, this );
+	LineButton->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( SelectionFrame::LineButtonOnButtonClick ), NULL, this );
 	SombreroButton->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( SelectionFrame::SombreroButtonOnButtonClick ), NULL, this );
 	GenerateShapeButton->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( SelectionFrame::GenerateShapeButtonOnButtonClick ), NULL, this );
 }
@@ -430,8 +430,8 @@ SelectionFrame::~SelectionFrame()
 	TriangleButton->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( SelectionFrame::TriangleButtonOnButtonClick ), NULL, this );
 	CircleButton->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( SelectionFrame::CircleButtonOnButtonClick ), NULL, this );
 	PolygonButton->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( SelectionFrame::PolygonButtonOnButtonClick ), NULL, this );
-	ParabolicButton->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( SelectionFrame::LineButtonOnButtonClick ), NULL, this );
-	CurveButton->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( SelectionFrame::CurveButtonOnButtonClick ), NULL, this );
+	ParabolaButton->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( SelectionFrame::ParabolaButtonOnButtonClick ), NULL, this );
+	LineButton->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( SelectionFrame::LineButtonOnButtonClick ), NULL, this );
 	SombreroButton->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( SelectionFrame::SombreroButtonOnButtonClick ), NULL, this );
 	GenerateShapeButton->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( SelectionFrame::GenerateShapeButtonOnButtonClick ), NULL, this );
 

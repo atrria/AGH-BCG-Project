@@ -28,17 +28,18 @@ void RotarySolidsSelectionFrame::CircleButtonOnButtonClick( wxCommandEvent& even
 
 void RotarySolidsSelectionFrame::PolygonButtonOnButtonClick( wxCommandEvent& event )
 {
-	mainFrame->setShape(Shape::polygon);
+mainFrame->setShape(Shape::polygon);
+mainFrame->setPolygonSides(PolygonCtrl->GetValue());
+}
+
+void RotarySolidsSelectionFrame::ParabolaButtonOnButtonClick( wxCommandEvent& event )
+{
+	mainFrame->setShape(Shape::parabola);
 }
 
 void RotarySolidsSelectionFrame::LineButtonOnButtonClick( wxCommandEvent& event )
 {
 	mainFrame->setShape(Shape::line);
-}
-
-void RotarySolidsSelectionFrame::CurveButtonOnButtonClick( wxCommandEvent& event )
-{
-	mainFrame->setShape(Shape::curve);
 }
 
 void RotarySolidsSelectionFrame::SombreroButtonOnButtonClick( wxCommandEvent& event )

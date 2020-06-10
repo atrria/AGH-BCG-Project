@@ -22,6 +22,7 @@
 #include <wx/image.h>
 #include <wx/icon.h>
 #include <wx/button.h>
+#include <wx/checkbox.h>
 #include <wx/frame.h>
 #include <wx/spinctrl.h>
 #include <wx/textctrl.h>
@@ -47,7 +48,7 @@ class MainFrame : public wxFrame
 		wxButton* OpenPropertiesWindowButton;
 		wxButton* SaveToFileButton;
 		wxStaticText* ChooseViewText;
-		wxButton* ParallelProjectionButton;
+		wxCheckBox* ParallelProjectionCheckBox;
 
 		// Virtual event handlers, overide them in your derived class
 		virtual void LeftPanelOnLeftDClick( wxMouseEvent& event ) { event.Skip(); }
@@ -60,7 +61,7 @@ class MainFrame : public wxFrame
 		virtual void zSliderUpdated( wxScrollEvent& event ) { event.Skip(); }
 		virtual void OpenPropertiesWindowButtonOnButtonClick( wxCommandEvent& event ) { event.Skip(); }
 		virtual void SaveToFileButtonOnButtonClick( wxCommandEvent& event ) { event.Skip(); }
-		virtual void ParallelProjectionButtonOnButtonClick( wxCommandEvent& event ) { event.Skip(); }
+		virtual void ParallelProjectionCheckBoxOnCheckBox( wxCommandEvent& event ) { event.Skip(); }
 
 
 	public:
@@ -86,8 +87,8 @@ class SelectionFrame : public wxFrame
 		wxButton* CircleButton;
 		wxButton* PolygonButton;
 		wxSpinCtrl* PolygonCtrl;
-		wxButton* ParabolicButton;
-		wxButton* CurveButton;
+		wxButton* ParabolaButton;
+		wxButton* LineButton;
 		wxButton* SombreroButton;
 		wxStaticText* xCoordText;
 		wxTextCtrl* xCoordTextCtrl;
@@ -103,8 +104,8 @@ class SelectionFrame : public wxFrame
 		virtual void TriangleButtonOnButtonClick( wxCommandEvent& event ) { event.Skip(); }
 		virtual void CircleButtonOnButtonClick( wxCommandEvent& event ) { event.Skip(); }
 		virtual void PolygonButtonOnButtonClick( wxCommandEvent& event ) { event.Skip(); }
+		virtual void ParabolaButtonOnButtonClick( wxCommandEvent& event ) { event.Skip(); }
 		virtual void LineButtonOnButtonClick( wxCommandEvent& event ) { event.Skip(); }
-		virtual void CurveButtonOnButtonClick( wxCommandEvent& event ) { event.Skip(); }
 		virtual void SombreroButtonOnButtonClick( wxCommandEvent& event ) { event.Skip(); }
 		virtual void GenerateShapeButtonOnButtonClick( wxCommandEvent& event ) { event.Skip(); }
 
