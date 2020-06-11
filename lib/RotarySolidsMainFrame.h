@@ -29,11 +29,9 @@ class RotarySolidsMainFrame : public MainFrame
 		void LeftPanelOnLeftDClick( wxMouseEvent& event );
 		void LeftPanelOnUpdateUI( wxUpdateUIEvent& event );
 		void xLabelOnLeftDClick( wxMouseEvent& event );
-		void xSliderUpdated( wxScrollEvent& event );
+		void xyzSliderUpdated( wxScrollEvent& event );
 		void yLabelOnLeftDClick( wxMouseEvent& event );
-		void ySliderUpdated( wxScrollEvent& event );
 		void zLabelOnLeftDClick( wxMouseEvent& event );
-		void zSliderUpdated( wxScrollEvent& event );
 		void OpenPropertiesWindowButtonOnButtonClick( wxCommandEvent& event );
 		void SaveToFileButtonOnButtonClick( wxCommandEvent& event );
 		void parallelViewResetOnButtonClick( wxCommandEvent& event );
@@ -80,18 +78,19 @@ class RotarySolidsMainFrame : public MainFrame
 		void setPolygonSides(int);
 
 	private:
-
 		wxImageHandler* imageHandler = nullptr;
 		RotarySolidsSelectionFrame* propertiesFrame = NULL;
 		Shape shape = Shape::square;
 		std::vector<std::vector<Point>> data;
 		std::vector<std::vector<Point>> dataWithoutRotation;
+
 		int solidRoundnessLevel = 0;
-		double xCoord = 0;
-		double zCoord = 0;
 		int fileNum = 1;
 		int polygonSides = 0;
 		int parallelView = 0;
+		double xCoord = 0;
+		double zCoord = 0;
+
 };
 
 #endif // __RotarySolidsMainFrame__

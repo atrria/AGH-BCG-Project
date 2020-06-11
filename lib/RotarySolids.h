@@ -55,11 +55,9 @@ class MainFrame : public wxFrame
 		virtual void LeftPanelOnLeftDClick( wxMouseEvent& event ) { event.Skip(); }
 		virtual void LeftPanelOnUpdateUI( wxUpdateUIEvent& event ) { event.Skip(); }
 		virtual void xLabelOnLeftDClick( wxMouseEvent& event ) { event.Skip(); }
-		virtual void xSliderUpdated( wxScrollEvent& event ) { event.Skip(); }
+		virtual void xyzSliderUpdated( wxScrollEvent& event ) { event.Skip(); }
 		virtual void yLabelOnLeftDClick( wxMouseEvent& event ) { event.Skip(); }
-		virtual void ySliderUpdated( wxScrollEvent& event ) { event.Skip(); }
 		virtual void zLabelOnLeftDClick( wxMouseEvent& event ) { event.Skip(); }
-		virtual void zSliderUpdated( wxScrollEvent& event ) { event.Skip(); }
 		virtual void OpenPropertiesWindowButtonOnButtonClick( wxCommandEvent& event ) { event.Skip(); }
 		virtual void SaveToFileButtonOnButtonClick( wxCommandEvent& event ) { event.Skip(); }
 		virtual void parallelViewResetOnButtonClick( wxCommandEvent& event ) { event.Skip(); }
