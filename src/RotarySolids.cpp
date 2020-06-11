@@ -6,6 +6,10 @@
 ///////////////////////////////////////////////////////////////////////////
 
 #include "RotarySolids.h"
+#include "resource.h"
+#ifdef __WXMSW__
+#include "wx/msw/private.h" //for wxGetInstance()
+#endif
 
 ///////////////////////////////////////////////////////////////////////////
 
@@ -13,6 +17,12 @@ MainFrame::MainFrame( wxWindow* parent, wxWindowID id, const wxString& title, co
 {
 	this->SetSizeHints( wxDefaultSize, wxDefaultSize );
 	this->SetBackgroundColour( wxSystemSettings::GetColour( wxSYS_COLOUR_WINDOWFRAME ) );
+
+	HWND hWnd = this->GetHandle();
+	HINSTANCE hInstance = wxGetInstance();
+
+	HICON hIcon = ExtractIcon(hInstance, L"IDI_ICON1.ico", 0);
+	SetClassLongPtr(hWnd, GCLP_HICONSM, (LONG_PTR)hIcon);
 
 	wxBoxSizer* MainSizer;
 	MainSizer = new wxBoxSizer( wxHORIZONTAL );
@@ -427,6 +437,7 @@ SelectionFrame::SelectionFrame( wxWindow* parent, wxWindowID id, const wxString&
 	this->Centre( wxBOTH );
 
 	// Connect Events
+	this->Connect( wxEVT_UPDATE_UI, wxUpdateUIEventHandler( SelectionFrame::SelectionFrameOnUpdateUI ) );
 	SquareButton->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( SelectionFrame::SquareButtonOnButtonClick ), NULL, this );
 	RectangleButton->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( SelectionFrame::RectangleButtonOnButtonClick ), NULL, this );
 	TriangleButton->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( SelectionFrame::TriangleButtonOnButtonClick ), NULL, this );
@@ -435,12 +446,14 @@ SelectionFrame::SelectionFrame( wxWindow* parent, wxWindowID id, const wxString&
 	ParabolaButton->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( SelectionFrame::ParabolaButtonOnButtonClick ), NULL, this );
 	LineButton->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( SelectionFrame::LineButtonOnButtonClick ), NULL, this );
 	SombreroButton->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( SelectionFrame::SombreroButtonOnButtonClick ), NULL, this );
+	numOfContoursTextCtrl->Connect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( SelectionFrame::numOfContoursTextCtrlOnText ), NULL, this );
 	GenerateShapeButton->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( SelectionFrame::GenerateShapeButtonOnButtonClick ), NULL, this );
 }
 
 SelectionFrame::~SelectionFrame()
 {
 	// Disconnect Events
+	this->Disconnect( wxEVT_UPDATE_UI, wxUpdateUIEventHandler( SelectionFrame::SelectionFrameOnUpdateUI ) );
 	SquareButton->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( SelectionFrame::SquareButtonOnButtonClick ), NULL, this );
 	RectangleButton->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( SelectionFrame::RectangleButtonOnButtonClick ), NULL, this );
 	TriangleButton->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( SelectionFrame::TriangleButtonOnButtonClick ), NULL, this );
@@ -449,6 +462,7 @@ SelectionFrame::~SelectionFrame()
 	ParabolaButton->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( SelectionFrame::ParabolaButtonOnButtonClick ), NULL, this );
 	LineButton->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( SelectionFrame::LineButtonOnButtonClick ), NULL, this );
 	SombreroButton->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( SelectionFrame::SombreroButtonOnButtonClick ), NULL, this );
+	numOfContoursTextCtrl->Disconnect( wxEVT_COMMAND_TEXT_UPDATED, wxCommandEventHandler( SelectionFrame::numOfContoursTextCtrlOnText ), NULL, this );
 	GenerateShapeButton->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( SelectionFrame::GenerateShapeButtonOnButtonClick ), NULL, this );
 
 }

@@ -9,6 +9,40 @@ RotarySolidsMainFrame::RotarySolidsMainFrame( wxWindow* parent ) : MainFrame( pa
 	setDefaultSliders();
 }
 
+void RotarySolidsMainFrame::LeftPanelOnLeftDClick( wxMouseEvent& event )
+{
+	setDefaultSliders();
+	generateShape();
+}
+
+void RotarySolidsMainFrame::LeftPanelOnUpdateUI( wxUpdateUIEvent& event )
+{
+	Repaint(false);
+}
+
+void RotarySolidsMainFrame::xLabelOnLeftDClick( wxMouseEvent& event )
+{
+	xSlider->SetValue(180);
+	rotateByXYZ();
+}
+
+void RotarySolidsMainFrame::xyzSliderUpdated( wxScrollEvent& event )
+{
+	rotateByXYZ();
+}
+
+void RotarySolidsMainFrame::yLabelOnLeftDClick( wxMouseEvent& event )
+{
+	ySlider->SetValue(180);
+	rotateByXYZ();
+}
+
+void RotarySolidsMainFrame::zLabelOnLeftDClick( wxMouseEvent& event )
+{
+	zSlider->SetValue(180);
+	rotateByXYZ();
+}
+
 void RotarySolidsMainFrame::OpenPropertiesWindowButtonOnButtonClick( wxCommandEvent& event )
 {
 	propertiesFrame = new RotarySolidsSelectionFrame(this);
@@ -61,20 +95,21 @@ void RotarySolidsMainFrame::parallelView3OnButtonClick( wxCommandEvent& event )
 	xSlider->SetValue(270);
 }
 
+
 void RotarySolidsMainFrame::drawShape(wxBufferedDC& buffDC, int width, int height, bool discardZ)
 {
 	buffDC.SetPen(wxColor(73, 135, 235));
 	buffDC.SetBrush(wxColor(161, 177, 201));
 
 	std::vector<Segment> triangles;
-	triangles.resize(2 * data.size() * solidRoundnessLevel);
+	triangles.resize(2 * data.size() * (solidRoundnessLevel + 1));
 	wxPoint shapePoints[3];
-	size_t k = 0;
+	size_t k;
+	k = 0;
 
 	#pragma omp parallel for
 	for (size_t i = 1; i < data.size(); i++)
 	{	
-		#pragma omp parallel for
 		for (size_t j = 1; j < data[0].size(); j++)
 		{
 			triangles[k] = Segment(data[i - 1][j - 1], data[i][j - 1], data[i][j]);
@@ -96,6 +131,18 @@ void RotarySolidsMainFrame::drawShape(wxBufferedDC& buffDC, int width, int heigh
 	}
 }
 
+void RotarySolidsMainFrame::setDefaultSliders()
+{
+	xSlider->SetValue(180);
+	ySlider->SetValue(180);
+	zSlider->SetValue(180);
+}
+
+void RotarySolidsMainFrame::setPolygonSides(int sides)
+{
+	polygonSides = sides;
+}
+
 void RotarySolidsMainFrame::generateShape()
 {
 	xCoord /= 10.;
@@ -110,17 +157,16 @@ void RotarySolidsMainFrame::generateShape()
 				//	|	A---B
 				//	|	|   |
 				//	|	D---C
-				data.resize(5, std::vector<Point>(solidRoundnessLevel + 1));
-				dataWithoutRotation.resize(5, std::vector<Point>(solidRoundnessLevel + 1));
+				resizeData(5);
 				data[4][0](xCoord, 0., 0.25 + zCoord);
+
 			}
 			else
 			{
 				//	|A---B
 				//	||   |
 				//	|D---C
-				data.resize(4, std::vector<Point>(solidRoundnessLevel + 1));
-				dataWithoutRotation.resize(4, std::vector<Point>(solidRoundnessLevel + 1));
+				resizeData(4);
 			}
 
 			data[0][0](xCoord, 0., 0.25 + zCoord);
@@ -137,8 +183,7 @@ void RotarySolidsMainFrame::generateShape()
 				//	|	A-------B
 				//	|	|       |
 				//	|	D-------C
-				data.resize(5, std::vector<Point>(solidRoundnessLevel + 1));
-				dataWithoutRotation.resize(5, std::vector<Point>(solidRoundnessLevel + 1));
+				resizeData(5);
 				data[4][0](xCoord, 0., 0.25 + zCoord);
 			}
 			else
@@ -146,8 +191,7 @@ void RotarySolidsMainFrame::generateShape()
 				//	|A-------B
 				//	||       |
 				//	|D-------C
-				data.resize(4, std::vector<Point>(solidRoundnessLevel + 1));
-				dataWithoutRotation.resize(4, std::vector<Point>(solidRoundnessLevel + 1));
+				resizeData(4);
 			}
 
 			data[0][0](xCoord, 0., 0.25 + zCoord);
@@ -165,8 +209,7 @@ void RotarySolidsMainFrame::generateShape()
 				//	|	| \
 				//  |	|  \
 				//	|	B---C
-				data.resize(4, std::vector<Point>(solidRoundnessLevel + 1));
-				dataWithoutRotation.resize(4, std::vector<Point>(solidRoundnessLevel + 1));
+				resizeData(4);
 				data[3][0](xCoord, 0., zCoord);
 			}
 			else
@@ -175,8 +218,7 @@ void RotarySolidsMainFrame::generateShape()
 				//	|| \
 				//  ||  \
 				//	|B---C
-				data.resize(3, std::vector<Point>(solidRoundnessLevel + 1));
-				dataWithoutRotation.resize(3, std::vector<Point>(solidRoundnessLevel + 1));
+				resizeData(3);
 			}
 
 			data[0][0](xCoord, 0., zCoord);
@@ -192,22 +234,10 @@ void RotarySolidsMainFrame::generateShape()
 			//	||        |
 			//  | \		 /
 			//	|   ----
-			data.resize(solidRoundnessLevel + 1, std::vector<Point>(solidRoundnessLevel + 1));
-			dataWithoutRotation.resize(solidRoundnessLevel + 1, std::vector<Point>(solidRoundnessLevel + 1));
+			resizeData(solidRoundnessLevel + 1);
 
 			data[0][0](0.2, 0., 0.2);
-			double phi = std::atan2(data[0][0].mZ, data[0][0].mX);
-			double angleStep = 2 * M_PI / solidRoundnessLevel;
-			double radius = std::sqrt(std::pow(data[0][0].mX, 2) + std::pow(data[0][0].mZ, 2));
-
-			#pragma omp parallel for
-			for (size_t i = 1; i < solidRoundnessLevel; i++)
-			{
-				data[i][0](xCoord + radius * std::cos(phi + i * angleStep), data[0][0].mY, zCoord + radius * std::sin(phi + i * angleStep));
-			}
-
-			data[0][0](xCoord + 0.2, 0., zCoord + 0.2);
-			data[solidRoundnessLevel][0] = data[0][0];
+			circleNextPoints(data[0], solidRoundnessLevel);
 
 			break;
 		}
@@ -217,22 +247,10 @@ void RotarySolidsMainFrame::generateShape()
 			// | /     \
 			// | \     /
 			// |   ---
-			data.resize(polygonSides + 1, std::vector<Point>(solidRoundnessLevel + 1));
-			dataWithoutRotation.resize(polygonSides + 1, std::vector<Point>(solidRoundnessLevel + 1));
+			resizeData(polygonSides + 1);
 
 			data[0][0](0.2, 0., 0.2);
-			double phi = std::atan2(data[0][0].mZ, data[0][0].mX);
-			double angleStep = 2 * M_PI / polygonSides;
-			double radius = std::sqrt(std::pow(data[0][0].mX, 2) + std::pow(data[0][0].mZ, 2));
-
-			#pragma omp parallel for
-			for (size_t i = 1; i < polygonSides; i++)
-			{
-				data[i][0](xCoord + radius * std::cos(phi + i * angleStep), data[0][0].mY, zCoord + radius * std::sin(phi + i * angleStep));
-			}
-
-			data[0][0](xCoord + 0.2, 0., zCoord + 0.2);
-			data[polygonSides][0] = data[0][0];
+			circleNextPoints(data[0], polygonSides);
 
 			break;
 		}
@@ -242,8 +260,7 @@ void RotarySolidsMainFrame::generateShape()
 			//	| \       /
 			//  |  \	 /
 			//	|    ---
-			data.resize(solidRoundnessLevel + 1, std::vector<Point>(solidRoundnessLevel + 1));
-			dataWithoutRotation.resize(solidRoundnessLevel + 1, std::vector<Point>(solidRoundnessLevel + 1));
+			resizeData(solidRoundnessLevel + 1);
 
 			double step = 0.03;
 			for (int i = 0; i < solidRoundnessLevel; i++)
@@ -261,8 +278,7 @@ void RotarySolidsMainFrame::generateShape()
 			// |   /
 			// |  /
 			// | /
-			data.resize(2, std::vector<Point>(solidRoundnessLevel + 1));
-			dataWithoutRotation.resize(2, std::vector<Point>(solidRoundnessLevel + 1));
+			resizeData(2);
 
 			data[0][0](xCoord, 0., zCoord);
 			data[1][0](0.35 + xCoord, 0., 0.25 + zCoord);
@@ -271,8 +287,7 @@ void RotarySolidsMainFrame::generateShape()
 		}
 		case Shape::sombrero:
 		{
-			data.resize(5, std::vector<Point>(solidRoundnessLevel + 1));
-			dataWithoutRotation.resize(5, std::vector<Point>(solidRoundnessLevel + 1));
+			resizeData(5);
 
 			data[0][0](xCoord, 0., zCoord);
 			data[1][0](0.15 + xCoord, 0., 0.10 + zCoord);
@@ -293,18 +308,25 @@ void RotarySolidsMainFrame::generateShape()
 	dataWithoutRotation.insert(dataWithoutRotation.begin(), data.begin(), data.end());
 }
 
-void RotarySolidsMainFrame::circleNextPoints(std::vector<Point>& circle)
+void RotarySolidsMainFrame::circleNextPoints(std::vector<Point>& circle, int sides)
 {
-	double phi = std::atan2(circle[0].mX, circle[0].mZ);
-	double angleStep = 2. * M_PI / solidRoundnessLevel;
-	double radius = std::sqrt(std::pow(circle[0].mX, 2) + std::pow(circle[0].mZ, 2));
+	double phi = std::atan2(data[0][0].mZ, data[0][0].mX);
+	double angleStep = 2 * M_PI / sides;
+	double radius = std::sqrt(std::pow(data[0][0].mX, 2) + std::pow(data[0][0].mZ, 2));
 
 	#pragma omp parallel for
-	for (size_t i = 1; i < solidRoundnessLevel; i++)
+	for (size_t i = 1; i < sides; i++)
 	{
-		circle[i](radius* std::sin(phi + i * angleStep), circle[0].mY, radius* std::cos(phi + i * angleStep));
+		data[i][0](xCoord + radius * std::cos(phi + i * angleStep), data[0][0].mY, zCoord + radius * std::sin(phi + i * angleStep));
 	}
-	circle[solidRoundnessLevel] = circle[0];
+
+	data[0][0](xCoord + 0.2, 0., zCoord + 0.2);
+	data[sides][0] = data[0][0];
+}
+
+void RotarySolidsMainFrame::setShape(Shape shape)
+{
+	this->shape = shape;
 }
 
 void RotarySolidsMainFrame::Repaint(bool discardZ)
@@ -324,6 +346,11 @@ void RotarySolidsMainFrame::Repaint(bool discardZ)
 	Update();
 }
 
+void RotarySolidsMainFrame::setSolidRoundnessLevel(int num)
+{
+	solidRoundnessLevel = num;
+}
+
 wxPoint RotarySolidsMainFrame::Point3DtoPoint2D(Point p, int width, int height, bool discardZ)
 {
 	if (discardZ)
@@ -333,6 +360,19 @@ wxPoint RotarySolidsMainFrame::Point3DtoPoint2D(Point p, int width, int height, 
 	else
 	{
 		return wxPoint((width / 2.) + ((width / 2.) * p.mX / std::abs(1. + p.mZ)), (height / 2.) + ((height / 2.) * p.mY / std::abs(1. + p.mZ)));
+	}
+}
+
+void RotarySolidsMainFrame::resizeData(int v)
+{
+	data.resize(v);
+	dataWithoutRotation.resize(v);
+
+	#pragma omp parallel for
+	for (size_t i = 0; i < v; i++)
+	{
+		data[i].resize(solidRoundnessLevel + 1);
+		dataWithoutRotation[i].resize(solidRoundnessLevel + 1);
 	}
 }
 
@@ -384,6 +424,16 @@ void RotarySolidsMainFrame::rotateByXYZ()
 	}
 }
 
+void RotarySolidsMainFrame::setXCoord(int x)
+{
+	xCoord = x;
+}
+
+void RotarySolidsMainFrame::setZCoord(int z)
+{
+	zCoord = z;
+}
+
 void RotarySolidsMainFrame::nextPoints(std::vector<Point>& data)
 {
 	double phi = std::atan2(data[0].mY, data[0].mX);
@@ -396,69 +446,4 @@ void RotarySolidsMainFrame::nextPoints(std::vector<Point>& data)
 		data[i](radius* std::cos(phi + i * angleStep), radius* std::sin(phi + i * angleStep), data[0].mZ);
 	}
 	data[solidRoundnessLevel] = data[0];
-}
-
-void RotarySolidsMainFrame::setXCoord(int x)
-{
-	xCoord = x;
-}
-
-void RotarySolidsMainFrame::setZCoord(int z)
-{
-	zCoord = z;
-}
-
-void RotarySolidsMainFrame::setNumOfContours(int num)
-{
-	solidRoundnessLevel = num;
-}
-
-void RotarySolidsMainFrame::setShape(Shape shape)
-{
-	this->shape = shape;
-}
-
-void RotarySolidsMainFrame::setDefaultSliders()
-{
-	xSlider->SetValue(180);
-	ySlider->SetValue(180);
-	zSlider->SetValue(180);
-}
-
-void RotarySolidsMainFrame::setPolygonSides(int sides)
-{
-	polygonSides = sides;
-}
-void RotarySolidsMainFrame::LeftPanelOnLeftDClick(wxMouseEvent& event)
-{
-	setDefaultSliders();
-	generateShape();
-}
-
-void RotarySolidsMainFrame::LeftPanelOnUpdateUI(wxUpdateUIEvent& event)
-{
-	Repaint(false);
-}
-
-void RotarySolidsMainFrame::xyzSliderUpdated(wxScrollEvent& event)
-{
-	rotateByXYZ();
-}
-
-void RotarySolidsMainFrame::xLabelOnLeftDClick(wxMouseEvent& event)
-{
-	xSlider->SetValue(180);
-	rotateByXYZ();
-}
-
-void RotarySolidsMainFrame::yLabelOnLeftDClick(wxMouseEvent& event)
-{
-	ySlider->SetValue(180);
-	rotateByXYZ();
-}
-
-void RotarySolidsMainFrame::zLabelOnLeftDClick(wxMouseEvent& event)
-{
-	zSlider->SetValue(180);
-	rotateByXYZ();
 }

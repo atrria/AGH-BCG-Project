@@ -6,6 +6,12 @@ RotarySolidsSelectionFrame::RotarySolidsSelectionFrame(RotarySolidsMainFrame* pa
 	mainFrame = parent;
 }
 
+void RotarySolidsSelectionFrame::SelectionFrameOnUpdateUI( wxUpdateUIEvent& event )
+{
+	mainFrame->Repaint(false);
+	Update();
+}
+
 void RotarySolidsSelectionFrame::SquareButtonOnButtonClick( wxCommandEvent& event )
 {
 	mainFrame->setShape(Shape::square);
@@ -28,8 +34,8 @@ void RotarySolidsSelectionFrame::CircleButtonOnButtonClick( wxCommandEvent& even
 
 void RotarySolidsSelectionFrame::PolygonButtonOnButtonClick( wxCommandEvent& event )
 {
-	mainFrame->setShape(Shape::polygon);
-	mainFrame->setPolygonSides(PolygonCtrl->GetValue());
+mainFrame->setShape(Shape::polygon);
+mainFrame->setPolygonSides(PolygonCtrl->GetValue());
 }
 
 void RotarySolidsSelectionFrame::ParabolaButtonOnButtonClick( wxCommandEvent& event )
@@ -49,9 +55,9 @@ void RotarySolidsSelectionFrame::SombreroButtonOnButtonClick( wxCommandEvent& ev
 
 void RotarySolidsSelectionFrame::GenerateShapeButtonOnButtonClick( wxCommandEvent& event )
 {
-	mainFrame->setDefaultSliders();
-	mainFrame->setNumOfContours(wxAtoi(numOfContoursTextCtrl->GetValue()));
-	mainFrame->setXCoord(wxAtof(xCoordTextCtrl->GetValue()) / 10.);
-	mainFrame->setZCoord(wxAtof(zCoordTextCtrl->GetValue()) / 10.);
-	mainFrame->generateShape();
+mainFrame->setDefaultSliders();
+mainFrame->setSolidRoundnessLevel(wxAtoi(numOfContoursTextCtrl->GetValue()));
+mainFrame->setXCoord(wxAtof(xCoordTextCtrl->GetValue()) / 10.);
+mainFrame->setZCoord(wxAtof(zCoordTextCtrl->GetValue()) / 10.);
+mainFrame->generateShape();
 }

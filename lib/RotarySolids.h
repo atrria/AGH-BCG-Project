@@ -101,6 +101,7 @@ class SelectionFrame : public wxFrame
 		wxButton* GenerateShapeButton;
 
 		// Virtual event handlers, overide them in your derived class
+		virtual void SelectionFrameOnUpdateUI( wxUpdateUIEvent& event ) { event.Skip(); }
 		virtual void SquareButtonOnButtonClick( wxCommandEvent& event ) { event.Skip(); }
 		virtual void RectangleButtonOnButtonClick( wxCommandEvent& event ) { event.Skip(); }
 		virtual void TriangleButtonOnButtonClick( wxCommandEvent& event ) { event.Skip(); }
@@ -109,6 +110,7 @@ class SelectionFrame : public wxFrame
 		virtual void ParabolaButtonOnButtonClick( wxCommandEvent& event ) { event.Skip(); }
 		virtual void LineButtonOnButtonClick( wxCommandEvent& event ) { event.Skip(); }
 		virtual void SombreroButtonOnButtonClick( wxCommandEvent& event ) { event.Skip(); }
+		virtual void numOfContoursTextCtrlOnText( wxCommandEvent& event ) { event.Skip(); }
 		virtual void GenerateShapeButtonOnButtonClick( wxCommandEvent& event ) { event.Skip(); }
 
 
