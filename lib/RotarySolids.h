@@ -22,7 +22,6 @@
 #include <wx/image.h>
 #include <wx/icon.h>
 #include <wx/button.h>
-#include <wx/checkbox.h>
 #include <wx/frame.h>
 #include <wx/spinctrl.h>
 #include <wx/textctrl.h>
@@ -47,8 +46,10 @@ class MainFrame : public wxFrame
 		wxSlider* zSlider;
 		wxButton* OpenPropertiesWindowButton;
 		wxButton* SaveToFileButton;
-		wxStaticText* ChooseViewText;
-		wxCheckBox* ParallelProjectionCheckBox;
+		wxButton* parallelViewReset;
+		wxButton* parallelView1;
+		wxButton* parallelView2;
+		wxButton* parallelView3;
 
 		// Virtual event handlers, overide them in your derived class
 		virtual void LeftPanelOnLeftDClick( wxMouseEvent& event ) { event.Skip(); }
@@ -61,7 +62,10 @@ class MainFrame : public wxFrame
 		virtual void zSliderUpdated( wxScrollEvent& event ) { event.Skip(); }
 		virtual void OpenPropertiesWindowButtonOnButtonClick( wxCommandEvent& event ) { event.Skip(); }
 		virtual void SaveToFileButtonOnButtonClick( wxCommandEvent& event ) { event.Skip(); }
-		virtual void ParallelProjectionCheckBoxOnCheckBox( wxCommandEvent& event ) { event.Skip(); }
+		virtual void parallelViewResetOnButtonClick( wxCommandEvent& event ) { event.Skip(); }
+		virtual void parallelView1OnButtonClick( wxCommandEvent& event ) { event.Skip(); }
+		virtual void parallelView2OnButtonClick( wxCommandEvent& event ) { event.Skip(); }
+		virtual void parallelView3OnButtonClick( wxCommandEvent& event ) { event.Skip(); }
 
 
 	public:

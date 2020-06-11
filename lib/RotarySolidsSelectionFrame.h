@@ -31,7 +31,6 @@ class RotarySolidsSelectionFrame : public SelectionFrame
 		RotarySolidsSelectionFrame(RotarySolidsMainFrame* parent);
 	private:
 		RotarySolidsMainFrame* mainFrame;
-
 };
 
 #endif // __RotarySolidsSelectionFrame__

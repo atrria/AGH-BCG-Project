@@ -22,6 +22,8 @@ MainFrame::MainFrame( wxWindow* parent, wxWindowID id, const wxString& title, co
 
 	LeftPanel = new wxPanel( this, wxID_ANY, wxDefaultPosition, wxSize( 700,700 ), wxTAB_TRAVERSAL );
 	LeftPanel->SetBackgroundColour( wxSystemSettings::GetColour( wxSYS_COLOUR_SCROLLBAR ) );
+	LeftPanel->SetMinSize( wxSize( 700,700 ) );
+	LeftPanel->SetMaxSize( wxSize( 800,800 ) );
 
 	LeftSizer->Add( LeftPanel, 1, wxALIGN_CENTER_HORIZONTAL|wxALL, 5 );
 
@@ -78,36 +80,44 @@ MainFrame::MainFrame( wxWindow* parent, wxWindowID id, const wxString& title, co
 	OpenPropertiesWindowButton = new wxButton( this, wxID_ANY, wxT("Wybierz figurę"), wxDefaultPosition, wxSize( 200,50 ), 0 );
 	OpenPropertiesWindowButton->SetBackgroundColour( wxSystemSettings::GetColour( wxSYS_COLOUR_ACTIVECAPTION ) );
 
-	bSizer15->Add( OpenPropertiesWindowButton, 0, wxALIGN_CENTER_HORIZONTAL|wxALL, 15 );
+	bSizer15->Add( OpenPropertiesWindowButton, 0, wxALIGN_CENTER_HORIZONTAL|wxALL, 10 );
 
 	SaveToFileButton = new wxButton( this, wxID_ANY, wxT("Zapisz do pliku"), wxDefaultPosition, wxSize( 200,50 ), 0 );
 	SaveToFileButton->SetBackgroundColour( wxSystemSettings::GetColour( wxSYS_COLOUR_ACTIVECAPTION ) );
 
-	bSizer15->Add( SaveToFileButton, 0, wxALL|wxALIGN_CENTER_HORIZONTAL, 15 );
+	bSizer15->Add( SaveToFileButton, 0, wxALL|wxALIGN_CENTER_HORIZONTAL, 10 );
 
 
 	RightSizer->Add( bSizer15, 1, wxEXPAND, 5 );
 
 	wxBoxSizer* RightViewSizer;
-	RightViewSizer = new wxBoxSizer( wxHORIZONTAL );
+	RightViewSizer = new wxBoxSizer( wxVERTICAL );
 
-	ChooseViewText = new wxStaticText( this, wxID_ANY, wxT("Przełącz widok:"), wxDefaultPosition, wxDefaultSize, wxALIGN_CENTER_HORIZONTAL );
-	ChooseViewText->Wrap( -1 );
-	ChooseViewText->SetFont( wxFont( 14, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false, wxEmptyString ) );
-	ChooseViewText->SetForegroundColour( wxColour( 255, 255, 255 ) );
+	parallelViewReset = new wxButton( this, wxID_ANY, wxT("Widok 3D"), wxDefaultPosition, wxSize( 200,50 ), 0 );
+	parallelViewReset->SetBackgroundColour( wxSystemSettings::GetColour( wxSYS_COLOUR_INACTIVECAPTION ) );
 
-	RightViewSizer->Add( ChooseViewText, 1, wxALL, 25 );
+	RightViewSizer->Add( parallelViewReset, 0, wxALL, 5 );
 
-	ParallelProjectionCheckBox = new wxCheckBox( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize( 30,30 ), 0 );
-	ParallelProjectionCheckBox->SetFont( wxFont( wxNORMAL_FONT->GetPointSize(), wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false, wxEmptyString ) );
+	parallelView1 = new wxButton( this, wxID_ANY, wxT("Rzut I"), wxDefaultPosition, wxSize( 200,50 ), 0 );
+	parallelView1->SetBackgroundColour( wxSystemSettings::GetColour( wxSYS_COLOUR_INACTIVECAPTION ) );
 
-	RightViewSizer->Add( ParallelProjectionCheckBox, 0, wxALL, 25 );
+	RightViewSizer->Add( parallelView1, 1, wxALL|wxALIGN_CENTER_HORIZONTAL, 5 );
+
+	parallelView2 = new wxButton( this, wxID_ANY, wxT("Rzut II"), wxDefaultPosition, wxSize( 200,50 ), 0 );
+	parallelView2->SetBackgroundColour( wxSystemSettings::GetColour( wxSYS_COLOUR_INACTIVECAPTION ) );
+
+	RightViewSizer->Add( parallelView2, 1, wxALL|wxALIGN_CENTER_HORIZONTAL, 5 );
+
+	parallelView3 = new wxButton( this, wxID_ANY, wxT("Rzut III"), wxDefaultPosition, wxSize( 200,50 ), 0 );
+	parallelView3->SetBackgroundColour( wxSystemSettings::GetColour( wxSYS_COLOUR_INACTIVECAPTION ) );
+
+	RightViewSizer->Add( parallelView3, 1, wxALL|wxALIGN_CENTER_HORIZONTAL, 5 );
 
 
 	RightSizer->Add( RightViewSizer, 2, wxALIGN_CENTER|wxALL, 5 );
 
 
-	MainSizer->Add( RightSizer, 1, wxEXPAND, 5 );
+	MainSizer->Add( RightSizer, 2, wxEXPAND, 5 );
 
 
 	this->SetSizer( MainSizer );
@@ -150,7 +160,10 @@ MainFrame::MainFrame( wxWindow* parent, wxWindowID id, const wxString& title, co
 	zSlider->Connect( wxEVT_SCROLL_TOP, wxScrollEventHandler( MainFrame::zSliderUpdated ), NULL, this );
 	OpenPropertiesWindowButton->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainFrame::OpenPropertiesWindowButtonOnButtonClick ), NULL, this );
 	SaveToFileButton->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainFrame::SaveToFileButtonOnButtonClick ), NULL, this );
-	ParallelProjectionCheckBox->Connect( wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler( MainFrame::ParallelProjectionCheckBoxOnCheckBox ), NULL, this );
+	parallelViewReset->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainFrame::parallelViewResetOnButtonClick ), NULL, this );
+	parallelView1->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainFrame::parallelView1OnButtonClick ), NULL, this );
+	parallelView2->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainFrame::parallelView2OnButtonClick ), NULL, this );
+	parallelView3->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainFrame::parallelView3OnButtonClick ), NULL, this );
 }
 
 MainFrame::~MainFrame()
@@ -190,7 +203,10 @@ MainFrame::~MainFrame()
 	zSlider->Disconnect( wxEVT_SCROLL_TOP, wxScrollEventHandler( MainFrame::zSliderUpdated ), NULL, this );
 	OpenPropertiesWindowButton->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainFrame::OpenPropertiesWindowButtonOnButtonClick ), NULL, this );
 	SaveToFileButton->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainFrame::SaveToFileButtonOnButtonClick ), NULL, this );
-	ParallelProjectionCheckBox->Disconnect( wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler( MainFrame::ParallelProjectionCheckBoxOnCheckBox ), NULL, this );
+	parallelViewReset->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainFrame::parallelViewResetOnButtonClick ), NULL, this );
+	parallelView1->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainFrame::parallelView1OnButtonClick ), NULL, this );
+	parallelView2->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainFrame::parallelView2OnButtonClick ), NULL, this );
+	parallelView3->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( MainFrame::parallelView3OnButtonClick ), NULL, this );
 
 }
 
