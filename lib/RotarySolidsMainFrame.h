@@ -91,7 +91,7 @@ class RotarySolidsMainFrame : public MainFrame
 		int solidRoundnessLevel = 2;
 		int fileNum = 1;
 		int polygonSides = 0;
-		int parallelView = 0;
+		bool parallelView = false;
 		double xCoord = 0;
 		double zCoord = 0;
 };
